@@ -1,14 +1,13 @@
 import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/db.js'; // instance of Sequelize connected to DB
+import sequelize from '../config/db.js';
 
 interface UserInstance extends Model {
   id: number;
   name: string;
   email: string;
   password: string;
-  registrationTime: Date;
-  lastLogin: Date;
-  status: string; // active/blocked
+  lastLogin?: Date; // optional: can be null
+  status: 'active' | 'blocked'; // can only be one of two strings
 }
 
 const User = sequelize.define<UserInstance>('User', {
@@ -30,17 +29,16 @@ const User = sequelize.define<UserInstance>('User', {
     type: DataTypes.STRING,
     allowNull: false, // required
   },
-  registrationTime: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW, // Automatically sets the registration time
-  },
   lastLogin: {
     type: DataTypes.DATE,
   },
   status: {
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM('active', 'blocked'), // ENUM for status
     defaultValue: 'active', // active when first created
   },
+}, {
+  modelName: 'User',
+  timestamps: true, // Set to false if you don't want createdAt and updatedAt
 });
 
 export default User;
