@@ -5,13 +5,7 @@ import { UniqueConstraintError } from 'sequelize';
 import User from '../models/User.js';
 
 export const register = async (req: Request, res: Response) => {    
-    try {
-        // check if user already exists +++NOT NECESSARY+++
-        // const existingUser = await User.findOne({ where: { email: req.body.email } });
-        // if (existingUser) {
-        //   return res.status(400).json({ message: 'User already exists' }); // 400 server unable to process request
-        // }
-    
+    try {    
         // hash password
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
