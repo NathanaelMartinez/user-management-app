@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     /* Language and Environment */
-    "target": "es2016",                                  
+    "target": "ESNext",                                  
 
     /* Modules */
-    "module": "NodeNext",
-    "moduleResolution": "nodenext",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "rootDir": "./src",
     "outDir": "./dist",                                
     "esModuleInterop": true,                             
@@ -18,5 +18,5 @@
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src"]
+  "include": ["src/**/*"]
 }
