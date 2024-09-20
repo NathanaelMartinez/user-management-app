@@ -1,55 +1,26 @@
 import React from 'react';
+import UserTable from '../components/userTable';
+import UserInfo from '../components/userInfo';
 
-interface User {
-  name: string;
-  email: string;
-  lastLogin: string;
-  status: string;
-}
+const UserManagementPage: React.FC = ( ) => {
 
-interface UserManagementPageProps {
-  users: User[];
-}
+  // TODO: remove dummy data after testing 
+  const users = [
+    { name: 'John Doe', email: 'john@example.com', lastLogin: '2023-09-15', status: 'Active' },
+    { name: 'Jane Smith', email: 'jane@example.com', lastLogin: '2023-09-10', status: 'Blocked' },
+    { name: 'Bob Johnson', email: 'bob@example.com', lastLogin: '2023-09-12', status: 'Active' },
+  ];
 
-const UserManagementPage: React.FC<UserManagementPageProps> = ({ users }) => {
+  const handleLogout = () => {
+    console.log("Logging out...");
+    // TODO: implement logout logic
+  };
+
   return (
     <div>
-      <div className="toolbar">
-        <button type="button" className="btn btn-danger">Block</button>
-        <button type="button" className="btn btn-secondary">
-          <i className="icon-unblock"></i> Unblock
-        </button>
-        <button type="button" className="btn btn-danger">
-          <i className="icon-delete"></i> Delete
-        </button>
-      </div>
+      <UserInfo name={users[0].name} onLogout={handleLogout} />
 
-      <table>
-        <thead>
-          <tr>
-            <th>
-              <input type="checkbox" id="select-all" />
-            </th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Last Login</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(user => (
-            <tr key={user.email}>
-              <td>
-                <input type="checkbox" className="user-checkbox" />
-              </td>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.lastLogin}</td>
-              <td>{user.status}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <UserTable users={users} /> {/* Use UserTable here */}
     </div>
   );
 };
