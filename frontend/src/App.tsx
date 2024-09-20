@@ -6,13 +6,20 @@ import RegisterPage from './pages/RegisterPage';
 import UserManagementPage from './pages/UserManagementPage';
 
 const App: React.FC = () => {
+  // TODO: remove dummy data after testing 
+  const users = [
+    { name: 'John Doe', email: 'john@example.com', lastLogin: '2023-09-15', status: 'Active' },
+    { name: 'Jane Smith', email: 'jane@example.com', lastLogin: '2023-09-10', status: 'Blocked' },
+    { name: 'Bob Johnson', email: 'bob@example.com', lastLogin: '2023-09-12', status: 'Active' },
+  ];
+
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/user-management" element={<UserManagementPage />} />
+        <Route path="/users" element={<UserManagementPage users={users} />} />
       </Routes>
     </Router>
   );

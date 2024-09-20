@@ -11,7 +11,7 @@ const RegisterPage: React.FC = () => {
     event.preventDefault();
     // TODO: connect with backend
     console.log('Logging in with:', { email, password });
-    navigate('/user-management');
+    navigate('/users');
   };
 
   return (
@@ -22,8 +22,8 @@ const RegisterPage: React.FC = () => {
           <label>Name:</label>
           <input
             type="text"
-            value={name} // This should now be correctly set
-            onChange={(e) => setName(e.target.value)} // This will correctly set the name
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
