@@ -17,7 +17,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
 
         // check if the user is blocked
         const user = await User.findByPk(decoded.userId);
-        if (user?.status === 'blocked') {
+        if (user?.status === "blocked") {
             return res.status(403).json({ message: 'Account is blocked.' });
         }
 
