@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UserTable from '../components/userTable';
 import UserInfo from '../components/userInfo';
 import { fetchUsers } from '../services/api';
@@ -7,6 +8,7 @@ import { User } from '../models/User';
 const UserManagementPage: React.FC = ( ) => {
   const [users, setUsers] = useState<User[]>([]);
   const userName = localStorage.getItem('userName') || 'Guest';
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -22,9 +24,18 @@ const UserManagementPage: React.FC = ( ) => {
     getUsers();
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token'); // check for token
+    if (!token) {
+      navigate('/login'); // redirect to login if no token
+    }
+  },[navigate]); // depend on navigate to avoid stale closures
+
   const handleLogout = () => {
     console.log("Logging out...");
-    // TODO: implement logout logic
+    localStorage.removeItem('token'); // remove token from local storage
+    localStorage.removeItem('userName');
+    navigate('/login');
   };
 
   return (

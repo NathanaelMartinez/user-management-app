@@ -8,7 +8,7 @@ interface UserInfoProps {
 const UserInfo: React.FC<UserInfoProps> = ({ name, onLogout }) => {
   return (
     <div className="user-info-box">
-      <span>Hello, {name}!</span> | <button onClick={onLogout}>Logout</button>
+      <span>Welcome, {name}!</span> | <button onClick={onLogout}>Logout</button>
     </div>
   );
 };
