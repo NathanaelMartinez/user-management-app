@@ -41,6 +41,7 @@ export const loginUser = async (credentials: { email: string; password: string }
       const { token, user } = response.data; // get JWT and user from response
       localStorage.setItem('token', token); // store token in localStorage
       localStorage.setItem('userName', user.name); // this is for displaying user's name
+      localStorage.setItem('userId', user.id.toString());
       return user.name;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

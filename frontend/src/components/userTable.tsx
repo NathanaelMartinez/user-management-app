@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { User } from '../models/User';
 import { deleteUsers, updateUserStatus } from '../services/api';
@@ -10,7 +11,8 @@ interface UserTableProps {
 
 const UserTable: React.FC<UserTableProps> = ({ users, onRefresh }) => {
     const [selectedUsers, setSelectedUsers] = useState<boolean[]>(Array(users.length).fill(false)); // track selected users, init to false
-    
+    const navigate = useNavigate();
+
     const handleUserSelect = (index: number) => {
         const updatedSelection = [...selectedUsers];
         updatedSelection[index] = !updatedSelection[index]; // toggle select state
@@ -41,7 +43,19 @@ const UserTable: React.FC<UserTableProps> = ({ users, onRefresh }) => {
         try {
             await updateUserStatus({ userIds: usersToBlock, action: 'block' }); // call the blockUsers function
             console.log('Users blocked successfully.');
-            onRefresh();
+            
+            // check if current user is in blocked list
+            const currentUserId = parseInt(localStorage.getItem('userId') || '0'); // make sure userId is number
+            if (usersToBlock.includes(currentUserId)) {
+                console.log('You have blocked yourself. Logging out...');
+                localStorage.removeItem('token');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userId');
+                navigate('/login'); // redirect to login
+                return;
+            } else {
+                onRefresh(); // refresh user list if not blocking self
+            }
         } catch (error) {
             console.error('Error blocking users:', error);
         }
@@ -73,6 +87,18 @@ const UserTable: React.FC<UserTableProps> = ({ users, onRefresh }) => {
         try {
             await deleteUsers(usersToDelete); // call the delete function
             console.log('Users deleted successfully.');
+
+            // check if current user is in delete list
+            const currentUserId = parseInt(localStorage.getItem('userId') || '0'); // make sure userId is number
+            if (usersToDelete.includes(currentUserId)) {
+                console.log('You have blocked yourself. Logging out...');
+                localStorage.removeItem('token');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userId');
+                navigate('/login'); // redirect to login
+            } else {
+                onRefresh(); // refresh user list if not deleting self
+            }
             setSelectedUsers(Array(users.length).fill(false)); // reset checkboxes
             onRefresh();
         } catch (error) {
