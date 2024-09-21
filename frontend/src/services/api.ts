@@ -64,3 +64,18 @@ export const registerUser = async (credentials: { name: string; email: string; p
       throw error;
     }
 };
+
+export const blockUnblockUsers = async (payload: { userIds: number[]; action: string }) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.patch(`${API_URL}/block`, payload, {
+            headers: {
+                Authorization: `Bearer ${token}`, // include token for authentication
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error blocking users:', error);
+        throw error;
+    }
+};

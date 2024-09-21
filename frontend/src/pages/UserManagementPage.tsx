@@ -12,10 +12,17 @@ const UserManagementPage: React.FC = ( ) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem('token'); // check for token
+    if (!token) {
+      navigate('/login'); // redirect to login if no token
+    }
+  },[navigate]); // depend on navigate to avoid stale closures
+
+  useEffect(() => {
     const getUsers = async () => {
       try {
-          const userData = await fetchUsers(); // call API to fetch users
-          console.log('Feched users:', userData); // Log the fetched data
+          const userData = await fetchUsers();
+          console.log('Feched users:', userData);
           setUsers(userData); // update state with fetched users data
       } catch (error) {
         if (axios.isAxiosError(error)) {  
@@ -28,17 +35,18 @@ const UserManagementPage: React.FC = ( ) => {
         }
       }
     };
-
     getUsers();
-  }, []);
+  },[navigate]);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token'); // check for token
-    if (!token) {
-      navigate('/login'); // redirect to login if no token
+  const refreshUserList = async () => {
+    try {
+      const userData = await fetchUsers();
+      setUsers(userData);
+    } catch (error) {
+      console.error('Error refreshing users:', error);
     }
-  },[navigate]); // depend on navigate to avoid stale closures
-
+  };
+  
   const handleLogout = () => {
     console.log("Logging out...");
     localStorage.removeItem('token'); // remove token from local storage
@@ -53,7 +61,7 @@ const UserManagementPage: React.FC = ( ) => {
       {users.length === 0 ? (
         <div>No users available.</div>
       ) : (
-        <UserTable users={users} />
+        <UserTable users={users} onRefresh={refreshUserList}/>
       )}
     </div>
   );

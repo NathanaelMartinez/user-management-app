@@ -1,12 +1,14 @@
 import React, { ChangeEvent, useState } from 'react';
 import { format } from 'date-fns';
 import { User } from '../models/User';
+import { blockUnblockUsers } from '../services/api';
   
 interface UserTableProps {
     users: User[];
+    onRefresh: () => void;
 }
 
-const UserTable: React.FC<UserTableProps> = ({ users }) => {
+const UserTable: React.FC<UserTableProps> = ({ users, onRefresh }) => {
     const [selectedUsers, setSelectedUsers] = useState<boolean[]>(Array(users.length).fill(false)); // track selected users, init to false
     
     const handleUserSelect = (index: number) => {
@@ -29,11 +31,43 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
         return format(date, 'HH:mm:ss MMM d, yyyy'); // Format the date
     };
 
+    const handleBlockSelectedUsers = async () => {
+        const usersToBlock = users.filter((_, index) => selectedUsers[index]).map(user => user.id); // collect selected userIds
+        if (usersToBlock.length === 0) {
+            console.log('No users selected for blocking.');
+            return;
+        }
+
+        try {
+            await blockUnblockUsers({ userIds: usersToBlock, action: 'block' }); // call the blockUsers function
+            console.log('Users blocked successfully.');
+            onRefresh();
+        } catch (error) {
+            console.error('Error blocking users:', error);
+        }
+    };
+
+    const handleUnblockSelectedUsers = async () => {
+        const usersToUnblock = users.filter((_, index) => selectedUsers[index]).map(user => user.id); // collect selected userIds
+        if (usersToUnblock.length === 0) {
+            console.log('No users selected for blocking.');
+            return;
+        }
+
+        try {
+            await blockUnblockUsers({ userIds: usersToUnblock, action: 'unblock' }); // call the blockUsers function
+            console.log('Users unblocked successfully.');
+            onRefresh();
+        } catch (error) {
+            console.error('Error unblocking users:', error);
+        }
+    };
+
     return (
         <div>
         <div className="toolbar">
-            <button type="button" className="btn btn-secondary">Block</button>
-            <button type="button" className="btn btn-secondary">
+            <button type="button" className="btn btn-secondary" onClick={handleBlockSelectedUsers}>Block</button>
+            <button type="button" className="btn btn-secondary" onClick={handleUnblockSelectedUsers}>
             <i className="icon-unblock"></i> Unblock
             </button>
             <button type="button" className="btn btn-danger">
