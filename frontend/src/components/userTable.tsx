@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import { format } from 'date-fns';
 import { User } from '../models/User';
-import { blockUnblockUsers } from '../services/api';
+import { updateUserStatus } from '../services/api';
   
 interface UserTableProps {
     users: User[];
@@ -39,7 +39,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onRefresh }) => {
         }
 
         try {
-            await blockUnblockUsers({ userIds: usersToBlock, action: 'block' }); // call the blockUsers function
+            await updateUserStatus({ userIds: usersToBlock, action: 'block' }); // call the blockUsers function
             console.log('Users blocked successfully.');
             onRefresh();
         } catch (error) {
@@ -55,7 +55,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onRefresh }) => {
         }
 
         try {
-            await blockUnblockUsers({ userIds: usersToUnblock, action: 'unblock' }); // call the blockUsers function
+            await updateUserStatus({ userIds: usersToUnblock, action: 'unblock' }); // call the blockUsers function
             console.log('Users unblocked successfully.');
             onRefresh();
         } catch (error) {
