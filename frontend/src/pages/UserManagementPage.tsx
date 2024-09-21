@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import UserTable from '../components/userTable';
 import UserInfo from '../components/userInfo';
+import { fetchUsers } from '../services/api';
+import { User } from '../models/User';
 
 const UserManagementPage: React.FC = ( ) => {
+  const [users, setUsers] = useState<User[]>([]);
+  const userName = localStorage.getItem('userName') || 'Guest';
 
-  // TODO: remove dummy data after testing 
-  const users = [
-    { name: 'John Doe', email: 'john@example.com', lastLogin: '2023-09-15', status: 'Active' },
-    { name: 'Jane Smith', email: 'jane@example.com', lastLogin: '2023-09-10', status: 'Blocked' },
-    { name: 'Bob Johnson', email: 'bob@example.com', lastLogin: '2023-09-12', status: 'Active' },
-  ];
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+          const userData = await fetchUsers(); // call API to fetch users
+          console.log('Feched users:', userData); // Log the fetched data
+          setUsers(userData); // update state with fetched users data
+      } catch (error) {
+          console.error('Error fetching users:', error);
+      }
+    };
+
+    getUsers();
+  }, []);
 
   const handleLogout = () => {
     console.log("Logging out...");
@@ -18,9 +29,13 @@ const UserManagementPage: React.FC = ( ) => {
 
   return (
     <div>
-      <UserInfo name={users[0].name} onLogout={handleLogout} />
+      <UserInfo name={userName} onLogout={handleLogout} />
 
-      <UserTable users={users} /> {/* Use UserTable here */}
+      {users.length === 0 ? (
+        <div>No users available.</div>
+      ) : (
+        <UserTable users={users} />
+      )}
     </div>
   );
 };
