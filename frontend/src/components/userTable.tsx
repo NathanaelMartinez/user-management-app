@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
+import { format } from 'date-fns';
 import { User } from '../models/User';
   
 interface UserTableProps {
@@ -16,8 +17,17 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
     
     function handleSelectAll(event: ChangeEvent<HTMLInputElement>): void {
         const isChecked = event.target.checked;
-        setSelectedUsers(Array(users.length).fill(isChecked)); // Set all to true or false
+        setSelectedUsers(Array(users.length).fill(isChecked)); // set all to true or false
     }
+
+    const formatDate = (dateString: string) => {
+        if (!dateString) {
+            return 'Never logged in';
+        }
+
+        const date = new Date(dateString);
+        return format(date, 'HH:mm:ss MMM d, yyyy'); // Format the date
+    };
 
     return (
         <div>
@@ -53,14 +63,15 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
             {users.map((user, index) => (
                 <tr key={user.email}>
                 <td>
-                    <input type="checkbox"
+                    <input 
+                        type="checkbox"
                         checked={selectedUsers[index]} // Check individual checkbox
                         onChange={() => handleUserSelect(index)} // Toggle individual selection
                     />
                 </td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td>{user.lastLogin}</td>
+                <td>{formatDate(user.lastLogin)}</td>
                 <td>{user.status}</td>
                 </tr>
             ))}
