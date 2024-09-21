@@ -1,10 +1,17 @@
 import express from 'express';
 import * as dotenv from 'dotenv';
+import cors from 'cors';
 import sequelize from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 
 const app = express();
 app.use(express.json());
+
+app.use(cors({
+    origin: 'http://localhost:3000', // allow requests from frontend
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Authorization', 'Content-Type'],
+}));
 
 app.use('/api/users', userRoutes);
 
