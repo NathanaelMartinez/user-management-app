@@ -51,7 +51,6 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
                         onChange={handleSelectAll} 
                         checked={selectedUsers.every(Boolean)}
                     />
-                    Select All
                 </th>
                 <th>Name</th>
                 <th>Email</th>

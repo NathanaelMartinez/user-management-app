@@ -4,6 +4,7 @@ import UserTable from '../components/userTable';
 import UserInfo from '../components/userInfo';
 import { fetchUsers } from '../services/api';
 import { User } from '../models/User';
+import axios from 'axios';
 
 const UserManagementPage: React.FC = ( ) => {
   const [users, setUsers] = useState<User[]>([]);
@@ -17,7 +18,14 @@ const UserManagementPage: React.FC = ( ) => {
           console.log('Feched users:', userData); // Log the fetched data
           setUsers(userData); // update state with fetched users data
       } catch (error) {
-          console.error('Error fetching users:', error);
+        if (axios.isAxiosError(error)) {  
+          if (error.message === 'Account is blocked or deleted') {
+            console.error('User account is blocked or deleted. Redirecting to login...');
+            navigate('/login'); // redirect on blocked or deleted account
+          } else {
+            console.error('Error fetching users:', error.message);
+          }
+        }
       }
     };
 

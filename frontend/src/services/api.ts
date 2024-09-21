@@ -3,14 +3,35 @@ import axios from 'axios';
 const API_URL = 'http://localhost:5000/api/users';
 
 export const fetchUsers = async () => {
-    const token = localStorage.getItem('token'); // get token from localStorage
-    const response = await axios.get(`${API_URL}/`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // put token in header for auth
+    try {
+        const token = localStorage.getItem('token'); // get token from localStorage
+        const response = await axios.get(`${API_URL}/`, {
+            headers: {
+            Authorization: `Bearer ${token}`, // put token in header for auth
         },
     });
-    console.log('API Response:', response.data);
-    return response.data; // return the user data
+        console.log('API Response:', response.data);
+        return response.data;
+    } catch (error) {
+        // needs to be axioserror
+        if (axios.isAxiosError(error)) {
+            if (error.response) {
+                // handle known errors
+                if (error.response.status === 403 || error.response.status === 404) {
+                        console.error('Access forbidden:', error.response.data);
+                        throw new Error('Account is blocked or deleted');
+                } else {
+                    console.error('Error fetching users:', error.response.data);
+                }
+            } else {
+                // handle general errors with no response
+                console.error('Error fetching users:', error.message);
+            }
+          } else {
+                console.error('An unexpected error occurred:', error);
+          }
+          throw error; // rethrow the error to be handled in the component
+    }
 };
 
 export const loginUser = async (credentials: { email: string; password: string }) => {
@@ -22,8 +43,14 @@ export const loginUser = async (credentials: { email: string; password: string }
       localStorage.setItem('userName', user.name); // this is for displaying user's name
       return user.name;
     } catch (error) {
-      console.error('Login failed:', error);
-      throw error;
+        if (axios.isAxiosError(error) && error.response) {
+            // handle specific error messages
+            console.error('Login failed:', error.response.data.message);
+            throw new Error(error.response.data.message);
+        } else {
+            console.error('Login failed:', error);
+            throw new Error('An unexpected error occurred.');
+        }
     }
 };
 
