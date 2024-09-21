@@ -68,7 +68,7 @@ export const registerUser = async (credentials: { name: string; email: string; p
 export const updateUserStatus = async (payload: { userIds: number[]; action: 'block' | 'unblock' }) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.patch(`${API_URL}/users/block`, payload, {
+        const response = await axios.patch(`${API_URL}/block`, payload, {
             headers: {
                 Authorization: `Bearer ${token}`, 
             },
@@ -76,6 +76,24 @@ export const updateUserStatus = async (payload: { userIds: number[]; action: 'bl
         return response.data;
     } catch (error) {
         console.error('Error updating user status:', error);
+        throw error; 
+    }
+};
+
+export const deleteUsers = async (userIds: number[]) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.delete(`${API_URL}/`,{
+            headers: {
+                Authorization: `Bearer ${token}`, 
+            },
+            params: {
+                userIds: userIds, // Send user IDs as query parameters
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting users:', error);
         throw error; 
     }
 };

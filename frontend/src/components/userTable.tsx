@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import { format } from 'date-fns';
 import { User } from '../models/User';
-import { updateUserStatus } from '../services/api';
+import { deleteUsers, updateUserStatus } from '../services/api';
   
 interface UserTableProps {
     users: User[];
@@ -63,6 +63,23 @@ const UserTable: React.FC<UserTableProps> = ({ users, onRefresh }) => {
         }
     };
 
+    const handleDeleteSelectedUsers = async () => {
+        const usersToDelete = users.filter((_, index) => selectedUsers[index]).map(user => user.id); // collect selected userIds
+        if (usersToDelete.length === 0) {
+            console.log('No users selected for deleting.');
+            return;
+        }
+
+        try {
+            await deleteUsers(usersToDelete); // call the delete function
+            console.log('Users deleted successfully.');
+            setSelectedUsers(Array(users.length).fill(false)); // reset checkboxes
+            onRefresh();
+        } catch (error) {
+            console.error('Error deleting users:', error);
+        }
+    };
+
     return (
         <div>
         <div className="toolbar">
@@ -70,7 +87,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onRefresh }) => {
             <button type="button" className="btn btn-secondary" onClick={handleUnblockSelectedUsers}>
             <i className="icon-unblock"></i> Unblock
             </button>
-            <button type="button" className="btn btn-danger">
+            <button type="button" className="btn btn-danger" onClick={handleDeleteSelectedUsers}>
             <i className="icon-delete"></i> Delete
             </button>
         </div>
