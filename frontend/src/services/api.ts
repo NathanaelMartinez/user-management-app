@@ -3,7 +3,6 @@ import axios from 'axios';
 const API_URL = 'http://localhost:5000/api/users';
 
 export const fetchUsers = async () => {
-    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE3MjY5Mzk1ODAsImV4cCI6MTcyNjk0MzE4MH0.MBw3xhrBgX4FL2lQawaAE_WvLJD4RdWQJpZ_LTIihng"
     const token = localStorage.getItem('token'); // get token from localStorage
     const response = await axios.get(`${API_URL}/`, {
         headers: {
@@ -24,6 +23,17 @@ export const loginUser = async (credentials: { email: string; password: string }
       return user.name;
     } catch (error) {
       console.error('Login failed:', error);
+      throw error;
+    }
+};
+
+export const registerUser = async (credentials: { name: string; email: string; password: string }) => {
+    try {
+      const response = await axios.post(`${API_URL}/register`, credentials);
+      console.log('Register response:', response.data); // for debugging
+      return response.data;
+    } catch (error) {
+      console.error('Registration failed:', error);
       throw error;
     }
 };

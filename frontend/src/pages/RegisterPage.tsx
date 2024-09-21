@@ -1,52 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import RegisterForm from '../components/registerForm';
+import { loginUser, registerUser } from '../services/api';
+
 
 const RegisterPage: React.FC = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    // TODO: connect with backend
-    console.log('Logging in with:', { email, password });
-    navigate('/users');
+  const handleRegisterSubmit = async (name: string, email: string, password: string) => {
+    try {
+      await registerUser({ name, email, password }); // call register function
+      console.log('Registration successful');
+
+      // Now log in
+      const token = await loginUser({ email, password });
+      console.log('Login successful, token:', token);
+
+      navigate('/users'); // navigate to table after successful registration
+    } catch (error) {
+      console.error('Registration failed:', error);
+    }
   };
 
   return (
     <div className='login-container'>
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Register</button>
-      </form>
+      <RegisterForm onSubmit={handleRegisterSubmit} />
       <p>
         Already have an account?{' '}
         <Link to="/login">Click here to go to login screen</Link>
