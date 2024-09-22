@@ -23,13 +23,17 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className='login-container'>
-      <h2>Register</h2>
-      <RegisterForm onSubmit={handleRegisterSubmit} />
-      <p>
-        Already have an account?{' '}
-        <Link to="/login">Click here to go to login screen</Link>
-      </p>
+    <div className="container d-flex justify-content-center align-items-center vh-100">
+      <div className="card shadow" style={{ width: '30rem' }}>
+        <div className="card-body">
+          <h2 className="card-title text-center">Register</h2>
+          <RegisterForm onSubmit={handleRegisterSubmit} />
+          <p className="mt-3 text-center">
+            Already have an account?{' '}
+            <Link to="/login">Click here to go to login screen</Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

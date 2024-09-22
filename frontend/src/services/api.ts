@@ -81,16 +81,14 @@ export const updateUserStatus = async (payload: { userIds: number[]; action: 'bl
     }
 };
 
-export const deleteUsers = async (userIds: number[]) => {
+export const deleteUsers = async (payload: {userIds: number[]}) => {
     try {
         const token = localStorage.getItem('token');
         const response = await axios.delete(`${API_URL}/`,{
             headers: {
                 Authorization: `Bearer ${token}`, 
             },
-            params: {
-                userIds: userIds, // Send user IDs as query parameters
-            },
+            data: payload,
         });
         return response.data;
     } catch (error) {

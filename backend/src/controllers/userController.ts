@@ -56,14 +56,14 @@ export const deleteUser = async (req: Request, res: Response) => {
 }
 
 export const deleteUsers = async (req: Request, res: Response) => {
-    let userIds = req.query.userIds;
+    const  { userIds } = req.body;
 
-    if (!Array.isArray(userIds) && typeof userIds === 'string') {
-        // convert string to array if only one ID is passed
-        userIds = [userIds];
-    }
-    if (!Array.isArray(userIds) || userIds.length === 0) {
+    if (!Array.isArray(userIds)) {
         return res.status(400).json({ message: 'Invalid user IDs. Must be a non-empty array.' });
+    }
+
+    if (userIds.length === 0) {
+        return res.status(400).json({ message: 'No user IDs provided.' });
     }
 
     try {

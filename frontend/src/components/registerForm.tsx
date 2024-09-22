@@ -16,34 +16,37 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label>Name:</label>
+      <div className='form-group'>
+        <label htmlFor="name">Name:</label>
         <input
           type="text"
+          className="form-control"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
         />
       </div>
-      <div>
-        <label>Email:</label>
+      <div className='form-group'>
+        <label htmlFor="email">Email:</label>
         <input
           type="email"
+          className="form-control"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
       </div>
-      <div>
-        <label>Password:</label>
+      <div className='form-group'>
+        <label htmlFor="password">Password:</label>
         <input
           type="password"
+          className="form-control"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
       </div>
-      <button type="submit">Register</button>
+      <button type="submit" className="btn btn-primary mt-3">Register</button>
     </form>
   );
 };
