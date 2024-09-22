@@ -60,6 +60,7 @@ export const login = async (req: Request, res: Response) => {
                 name: user.name,
                 email: user.email,
                 status: user.status,
+                id: user.id,
         } });
     }   catch (error) {
             console.error(error);

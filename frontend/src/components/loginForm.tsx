@@ -15,25 +15,29 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label>Email:</label>
+      <div className="form-group">
+        <label htmlFor="email">Email:</label>
         <input
           type="email"
+          id="email"
+          className="form-control" // Bootstrap class for styling
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
       </div>
-      <div>
-        <label>Password:</label>
+      <div className="form-group">
+        <label htmlFor="password">Password:</label>
         <input
           type="password"
+          id="password"
+          className="form-control" // Bootstrap class for styling
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" className="btn btn-primary mt-3">Login</button>
     </form>
   );
 };
