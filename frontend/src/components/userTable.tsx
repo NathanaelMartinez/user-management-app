@@ -12,7 +12,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onRefresh, onSelectedUsers
     const [selectedUsers, setSelectedUsers] = useState<boolean[]>([]);
 
     useEffect(() => {
-        // Initialize selected users state when users are updated
+        // initialize selected users state when users are updated
         setSelectedUsers(Array(users.length).fill(false));
     }, [users]);
 
@@ -32,7 +32,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onRefresh, onSelectedUsers
 
     const formatDate = (dateString: string) => {
         if (!dateString) {
-            return 'Never logged in';
+            return 'No info available';
         }
         const date = new Date(dateString);
         return format(date, 'HH:mm:ss MMM d, yyyy');
@@ -48,12 +48,14 @@ const UserTable: React.FC<UserTableProps> = ({ users, onRefresh, onSelectedUsers
                                 type="checkbox"
                                 id="select-all"
                                 onChange={handleSelectAll}
-                                checked={selectedUsers.length > 0 && selectedUsers.every(Boolean)} // Ensure checked only if there are users
+                                checked={selectedUsers.length > 0 && selectedUsers.every(Boolean)} // ensure checked only if there are users
                             />
                         </th>
+                        <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Last Login</th>
+                        <th>Registration Time</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -67,9 +69,11 @@ const UserTable: React.FC<UserTableProps> = ({ users, onRefresh, onSelectedUsers
                                     onChange={() => handleUserSelect(index)}
                                 />
                             </td>
+                            <td>{user.id}</td>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
                             <td>{formatDate(user.lastLogin)}</td>
+                            <td>{formatDate(user.createdAt)}</td>
                             <td>{user.status}</td>
                         </tr>
                     ))}

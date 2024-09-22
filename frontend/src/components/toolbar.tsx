@@ -9,7 +9,7 @@ interface ToolbarProps {
 const Toolbar: React.FC<ToolbarProps> = ({ onBlock, onUnblock, onDelete }) => {
     return (
         <div className="d-flex justify-content-start">
-            <button type="button" className="btn btn-secondary me-2" onClick={onBlock}>
+            <button type="button" className="btn btn-danger me-2" onClick={onBlock}>
                 <i className="bi bi-lock"></i> Block
             </button>
             <button type="button" className="btn btn-secondary me-2" onClick={onUnblock}>
