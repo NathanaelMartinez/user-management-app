@@ -1,9 +1,9 @@
 // src/app/App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import LoginPage from './pages/LoginPage.js';
-import RegisterPage from './pages/RegisterPage.js';
-import UserManagementPage from './pages/UserManagementPage.js';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import UserManagementPage from './pages/UserManagementPage';
 
 const App: React.FC = () => {
   return (

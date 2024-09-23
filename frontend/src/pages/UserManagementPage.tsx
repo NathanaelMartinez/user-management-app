@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import UserTable from '../components/UserTable.js';
-import UserInfo from '../components/UserInfo.js';
-import { User } from '../models/User.js';
-import Toolbar from '../components/ToolBar.js';
-import { deleteUsers, fetchUsers, updateUserStatus } from '../services/api.js';
+import UserTable from '../components/UserTable';
+import UserInfo from '../components/UserInfo';
+import { User } from '../models/User';
+import Toolbar from '../components/ToolBar';
+import { deleteUsers, fetchUsers, updateUserStatus } from '../services/api';
 
 const UserManagementPage: React.FC = ( ) => {
   const [users, setUsers] = useState<User[]>([]);
