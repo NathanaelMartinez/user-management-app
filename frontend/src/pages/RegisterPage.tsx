@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import RegisterForm from '../components/registerForm';
+import RegisterForm from '../components/RegisterForm';
 import { loginUser, registerUser } from '../services/api';
 
 
