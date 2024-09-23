@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import LoginForm from '../components/loginForm';
+import LoginForm from '../components/LoginForm';
 import { loginUser } from '../services/api';
 
 const LoginPage: React.FC = () => {
